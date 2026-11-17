@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>KAMPUNG KITA</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Manrope:wght@400;500;600&display=swap">
+<style>
+:root{--bg:#0b100d;--panel:#101612;--line:#222c25;--ink:#e9e6dc;--muted:#8f9b92;--gold:#c9a961;--gold2:#e3cf9c;--leaf:#7fae83;--err:#e89a9a;--ok:#8fd0a0;--side:248px;box-sizing:border-box;color-scheme:dark}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-behavior:smooth}
+body{margin:0;color:var(--ink);font:400 16px/1.65 Manrope,system-ui,sans-serif;min-height:100vh;background:radial-gradient(900px 420px at 100% -10%,#7fae8312,transparent 70%),var(--bg)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--gold);outline-offset:3px}
+h1,h2,.serif,.stat b,.fam b,.sec,.lnk b{font-family:Fraunces,Georgia,serif}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.side{position:fixed;inset:0 auto 0 0;width:var(--side);z-index:30;display:flex;flex-direction:column;gap:18px;padding:22px 16px;overflow-y:auto;border-right:1px solid var(--line);background:#0d130f}
+.logo{display:block;width:100%;max-height:150px;object-fit:contain;mix-blend-mode:screen}
+.menu{display:flex;flex-direction:column;gap:2px;flex:1}
+.menu a{text-decoration:none;color:var(--muted);font-weight:500;font-size:.94rem;padding:9px 14px;border-radius:10px;border-left:2px solid transparent;transition:color .2s,background .2s}
+.menu a:hover{color:var(--ink);background:#ffffff08}
+.menu a[aria-current="page"]{color:var(--gold2);background:#c9a9611a;border-left-color:var(--gold)}
+.soc{display:flex;gap:8px}
+.soc .lnk{flex:1;padding:8px 4px;text-align:center;border-radius:10px}.soc .lnk b{font:600 .68rem Manrope,sans-serif}.soc .lnk span{display:none}
+.suser{border-top:1px solid var(--line);padding-top:16px}
+.suser p{margin:0 0 10px;color:var(--muted);font-size:.85rem}
+.suser b{display:block;font-size:.95rem;word-break:break-all}.suser span{color:var(--muted);font-size:.8rem}
+.lnk{display:block;text-decoration:none;border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:var(--panel);transition:border-color .2s}
+.lnk:hover{border-color:#c9a96166}
+.lnk b{display:block;font-size:1rem;font-weight:600}.lnk span{color:var(--muted);font-size:.86rem}
+.links-slot.big{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.top{display:none}.scrim{display:none}
+@media(max-width:900px){
+  .top{display:flex;position:sticky;top:0;z-index:20;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;background:#0b100def;border-bottom:1px solid var(--line)}
+  .top button{background:none;border:1px solid var(--line);color:var(--gold2);border-radius:10px;width:42px;height:42px;font-size:1.25rem;cursor:pointer}
+  .top .serif{font-size:1.1rem;font-weight:600}
+  .side{transform:translateX(-102%);transition:transform .3s ease;padding-top:calc(22px + env(safe-area-inset-top,0px))}
+  body.open .side{transform:none}
+  body.open .scrim{display:block;position:fixed;inset:0;background:#000a;z-index:25}
+  main{margin-left:0!important}
+}
+main{margin-left:var(--side);padding:0 clamp(18px,5vw,64px) 40px;max-width:calc(var(--side) + 1040px)}
+.page{display:none;padding-top:clamp(28px,5vw,64px)}
+.page.on{display:block;animation:pg .35s ease both}
+@keyframes pg{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+h1{font-weight:600;font-size:clamp(1.9rem,4.6vw,3rem);line-height:1.12;margin:0 0 14px;letter-spacing:-.01em}
+h2{font-weight:600;font-size:1.2rem;margin:0 0 4px;line-height:1.3}
+.lead{font-size:1.04rem;color:var(--muted);max-width:56ch;margin:0 0 26px}
+.rule{height:2px;width:40px;background:var(--gold);margin:0 0 18px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center;border:1px solid var(--line);border-radius:24px;padding:clamp(24px,5vw,52px);margin-bottom:22px;background:var(--panel)}
+@media(max-width:860px){.hero{grid-template-columns:1fr}}
+.art{border-radius:16px;overflow:hidden;border:1px solid var(--line)}
+.art img{display:block;width:100%}
+.acts{display:flex;gap:12px;flex-wrap:wrap}
+.btn{display:inline-block;border:1px solid var(--gold);border-radius:12px;padding:12px 24px;font:600 .95rem Manrope,sans-serif;text-decoration:none;cursor:pointer;color:#14110a;background:var(--gold);transition:background .2s}
+.btn:hover{background:var(--gold2)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:#e9e6dc33}
+.btn.ghost:hover{border-color:var(--gold);color:var(--gold2);background:transparent}
+.btn[disabled]{opacity:.6;cursor:wait}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card,.box,form{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px}
+.card{transition:border-color .2s}.card:hover{border-color:#c9a96155}
+.card p{margin:6px 0 18px;color:var(--muted);font-size:.95rem}
+.gem{width:8px;height:8px;border-radius:50%;background:var(--leaf);margin:4px 0 14px}
+.sec{margin:40px 0 16px;font-weight:600;font-size:1.3rem}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin:0 0 8px}
+.stat{padding:22px 16px;border:1px solid var(--line);border-radius:16px;background:var(--panel);text-align:center}
+.stat b{display:block;font-weight:600;font-size:clamp(1.9rem,4.6vw,2.6rem);line-height:1.1;color:var(--gold2)}
+.stat span{color:var(--muted);font-size:.9rem}
+.fams{display:grid;gap:10px}
+.fam{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 20px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+.fam b{font-weight:600;font-size:1.05rem}.fam span{color:var(--gold2);font-weight:600}
+.narrow{max-width:620px}
+label{display:block;font-weight:600;font-size:.88rem;margin:16px 0 7px;color:var(--gold2)}
+input,select,textarea{width:100%;font:inherit;color:var(--ink);background:#0a0f0c;border:1px solid var(--line);border-radius:12px;padding:12px 14px;transition:border-color .2s}
+select option{background:#0a0f0c}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--gold)}
+textarea{min-height:88px;resize:vertical}
+.hint{font-size:.82rem;color:var(--muted);margin-top:5px}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.row{grid-template-columns:1fr}}
+.photo{display:flex;align-items:center;gap:16px}
+.photo img{width:72px;height:72px;border-radius:50%;object-fit:cover;background:var(--line);flex:none;border:2px solid var(--gold)}
+.photo input{padding:10px}
+.submit{margin-top:24px;width:100%}
+.msg{margin-top:16px;padding:13px 15px;border-radius:12px;font-size:.94rem;display:none}
+.msg.ok{display:block;background:#8fd0a014;color:var(--ok);border:1px solid #8fd0a040}
+.msg.err{display:block;background:#e89a9a14;color:var(--err);border:1px solid #e89a9a40}
+.who{display:flex;align-items:center;gap:13px;border:1px solid var(--line);background:#0a0f0c;border-radius:14px;padding:11px 13px}
+.who img{width:44px;height:44px;border-radius:50%;object-fit:cover;background:var(--line);flex:none}
+.who b{display:block}.who span{color:var(--muted);font-size:.86rem}
+.gate{text-align:center;padding:22px 6px}.gate p{color:var(--muted);margin:0 0 16px}
+.status{display:inline-block;padding:5px 14px;border-radius:999px;font-weight:600;font-size:.9rem;border:1px solid}
+.s-wait{color:var(--gold2);border-color:#c9a96166}.s-ok{color:var(--ok);border-color:#8fd0a066}.s-no{color:var(--err);border-color:#e89a9a66}
+.empty{color:var(--muted);padding:22px 0}
+.shop .meta{color:var(--muted);font-size:.9rem}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.chip{padding:4px 12px;border-radius:999px;border:1px solid var(--line);color:var(--gold2);font-size:.86rem}
+.media img{width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:12px;background:var(--line);margin-bottom:12px}
+.card.bl{border-color:#e89a9a40}.card.bl h2{color:var(--err)}
+.toolbar{margin-bottom:18px;max-width:420px}
+ol.rules{padding-left:22px;margin:0;color:var(--muted)}ol.rules li{margin:10px 0}ol.rules li::marker{color:var(--gold)}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:.88rem}
+[hidden]{display:none!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="top"><button id="burger" aria-label="Buka menu" aria-expanded="false">☰</button><span class="serif" id="topName">KAMPUNG KITA</span></div>
+<div class="scrim" id="scrim"></div>
+
+<aside class="side" id="side" aria-label="Navigasi">
+  <div class="brand"><img class="logo" src="kampung-kita.gif" alt="KAMPUNG KITA" onerror="this.hidden=true"><b id="brand" class="sr">KAMPUNG KITA</b></div>
+  <nav class="menu" id="links">
+    <a href="#home">Home</a>
+    <a href="#warga">Warga</a>
+    <a href="#seller">Daftar Seller</a>
+    <a href="#server">Daftar Server</a>
+    <a href="#kif">Daftar KIF</a>
+    <a href="#cek">Cek Seller</a>
+    <a href="#market">Marketplace</a>
+    <a href="#media">Media</a>
+    <a href="#blacklist">Blacklist Fams</a>
+    <a href="#aturan">Aturan</a>
+  </nav>
+  <div class="soc links-slot"></div>
+  <div class="suser" id="suser"></div>
+</aside>
+
+<main>
+
+<section class="page" id="p-home">
+  <div class="hero">
+    <div>
+      <div class="rule"></div>
+      <h1>Selamat datang di KAMPUNG KITA</h1>
+      <p class="lead">Daftar jadi warga, buka lapak di marketplace, dan cek status pendaftaranmu di satu tempat.</p>
+      <div class="acts"><a class="btn" href="#server">Daftar jadi warga</a><a class="btn ghost" href="#market">Lihat marketplace</a></div>
+    </div>
+    <div class="art"><img src="banner.webp" alt="KAMPUNG KITA" onerror="this.parentNode.hidden=true"></div>
+  </div>
+  <div class="stats">
+    <div class="stat"><b data-n="members">—</b><span>Warga</span></div>
+    <div class="stat"><b data-n="online">—</b><span>Online</span></div>
+    <div class="stat"><b data-n="fams">—</b><span>Fams</span></div>
+    <div class="stat"><b data-n="sellers">—</b><span>Seller</span></div>
+  </div>
+  <h2 class="sec">Gabung komunitas</h2>
+  <div class="links-slot big"></div>
+</section>
+
+<section class="page" id="p-seller">
+  <div class="narrow">
+    <h1>Daftar Seller</h1><div class="rule"></div>
+    <p class="lead">Isi data asli dan aktif. Setelah staf menyetujui, bot memberi role seller otomatis dan mengirim DM.</p>
+    <form id="fSeller" novalidate>
+      <div class="gate-slot"></div>
+      <div class="need-login">
+        <label for="s-nama">Nama asli</label><input id="s-nama" name="nama" required autocomplete="name">
+        <div class="row">
+          <div><label for="s-asal">Asal</label><input id="s-asal" name="asal" required placeholder="Kota / daerah"></div>
+          <div><label for="s-gender">Jenis kelamin</label><select id="s-gender" name="jenis_kelamin" required><option value="">Pilih</option><option>Laki-laki</option><option>Perempuan</option></select></div>
+        </div>
+        <div class="row">
+          <div><label for="s-telp">Nomor telepon aktif</label><input id="s-telp" name="telepon" type="tel" inputmode="tel" required placeholder="08xxxxxxxxxx"></div>
+          <div><label for="s-wa">Nomor WhatsApp aktif</label><input id="s-wa" name="whatsapp" type="tel" inputmode="tel" required placeholder="08xxxxxxxxxx"></div>
+        </div>
+        <label for="s-toko">Nama toko (opsional)</label><input id="s-toko" name="toko">
+        <label for="s-jual">Produk yang dijual</label><textarea id="s-jual" name="produk" required maxlength="300" placeholder="Satu produk per baris, maksimal 6"></textarea>
+        <div class="hint">Nama dan produk tampil di Marketplace. Foto, nomor telepon, dan WhatsApp hanya dilihat staf.</div>
+        <label for="s-foto">Foto kamu</label>
+        <div class="photo">
+          <img id="s-prev" alt="Pratinjau foto" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 72 72'%3E%3Crect width='72' height='72' fill='%2326372d'/%3E%3Ccircle cx='36' cy='28' r='13' fill='%239fada4'/%3E%3Cpath d='M10 72c2-20 14-26 26-26s24 6 26 26z' fill='%239fada4'/%3E%3C/svg%3E">
+          <input id="s-foto" name="foto" type="file" accept="image/png,image/jpeg,image/webp" required>
+        </div>
+        <div class="hint">JPG, PNG, atau WEBP. Maksimal 5 MB.</div>
+        <button class="btn submit" type="submit">Kirim pendaftaran seller</button>
+      </div>
+      <div class="msg" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<section class="page" id="p-server">
+  <div class="narrow">
+    <h1>Daftar Server</h1><div class="rule"></div>
+    <p class="lead">Tanpa unggah foto, kartu memakai foto profil Discord. Role verifikasi diberikan otomatis begitu pendaftaran terkirim.</p>
+    <form id="fServer" novalidate>
+      <div class="gate-slot"></div>
+      <div class="need-login">
+        <label for="v-nama">Nama</label><input id="v-nama" name="nama" required maxlength="40" autocomplete="name">
+        <div class="row">
+          <div><label for="v-asal">Asal</label><input id="v-asal" name="asal" required maxlength="40" placeholder="Kota / daerah"></div>
+          <div><label for="v-neg">Negara</label><input id="v-neg" name="negara" required maxlength="40" value="Indonesia"></div>
+        </div>
+        <div class="row">
+          <div><label for="v-tgl">Tanggal lahir</label><input id="v-tgl" name="tanggal" type="date" required></div>
+          <div><label for="v-agm">Agama</label><select id="v-agm" name="agama" required><option value="">Pilih</option><option>Islam</option><option>Kristen</option><option>Katolik</option><option>Hindu</option><option>Buddha</option><option>Konghucu</option><option>Lainnya</option></select></div>
+        </div>
+        <button class="btn submit" type="submit">Kirim pendaftaran server</button>
+      </div>
+      <div class="msg" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<section class="page" id="p-kif">
+  <div class="narrow">
+    <h1>Daftar KIF</h1><div class="rule"></div>
+    <p class="lead">Pilih fams yang ingin kamu masuki. Role verifikasi fams diberikan otomatis, dan kartu KIF dikirim lewat DM Discord.</p>
+    <form id="fKif" novalidate>
+      <div class="gate-slot"></div>
+      <div class="need-login">
+        <label for="k-fams">Pilih fams</label><select id="k-fams" name="fams" required><option value="">Memuat…</option></select>
+        <label for="k-nama">Nama</label><input id="k-nama" name="nama" required maxlength="40" autocomplete="name">
+        <div class="row">
+          <div><label for="k-asal">Asal</label><input id="k-asal" name="asal" required maxlength="40" placeholder="Kota / daerah"></div>
+          <div><label for="k-neg">Negara</label><input id="k-neg" name="negara" required maxlength="40" value="Indonesia"></div>
+        </div>
+        <label for="k-agm">Agama</label><select id="k-agm" name="agama" required><option value="">Pilih</option><option>Islam</option><option>Kristen</option><option>Katolik</option><option>Hindu</option><option>Buddha</option><option>Konghucu</option><option>Lainnya</option></select>
+        <button class="btn submit" type="submit">Kirim pendaftaran KIF</button>
+      </div>
+      <div class="msg" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</section>
+
+<section class="page" id="p-cek">
+  <div class="narrow">
+    <h1>Cek Seller</h1><div class="rule"></div>
+    <p class="lead">Masuk dengan Discord untuk melihat status pendaftaran seller kamu.</p>
+    <div class="box">
+      <div class="gate-slot"></div>
+      <div class="need-login"><div id="cekOut" class="empty">Memuat status…</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="p-market">
+  <h1>Marketplace</h1><div class="rule"></div>
+  <p class="lead">Seller KAMPUNG KITA yang sudah disetujui staf dan produk yang mereka jual.</p>
+  <div class="toolbar"><input id="q" type="search" placeholder="Cari nama, toko, atau produk" aria-label="Cari seller"></div>
+  <div class="cards" id="shopList"></div>
+  <div class="empty" id="shopEmpty" hidden>Belum ada seller yang cocok.</div>
+</section>
+
+<section class="page" id="p-warga">
+  <h1>Warga KAMPUNG KITA</h1><div class="rule"></div>
+  <p class="lead">Jumlah warga dan fams yang tergabung di KAMPUNG KITA.</p>
+  <div class="stats">
+    <div class="stat"><b data-n="members">—</b><span>Warga</span></div>
+    <div class="stat"><b data-n="online">—</b><span>Online</span></div>
+    <div class="stat"><b data-n="fams">—</b><span>Fams</span></div>
+    <div class="stat"><b data-n="sellers">—</b><span>Seller</span></div>
+  </div>
+  <h2 class="sec">Fams terdaftar</h2>
+  <div class="fams" id="famList"></div>
+  <div class="empty" id="famEmpty" hidden>Belum ada fams terdaftar.</div>
+</section>
+
+<section class="page" id="p-media">
+  <h1>Media KAMPUNG KITA</h1><div class="rule"></div>
+  <p class="lead">Konten terbaru diambil langsung dari channel media KAMPUNG KITA di Discord.</p>
+  <div class="links-slot big" style="margin-bottom:18px"></div>
+  <div class="cards" id="mediaList"></div>
+  <div class="empty" id="mediaEmpty" hidden>Belum ada media.</div>
+</section>
+
+<section class="page" id="p-blacklist">
+  <h1>Blacklist Fams</h1><div class="rule"></div>
+  <p class="lead">Fams yang diblokir dari KAMPUNG KITA karena melanggar aturan.</p>
+  <div class="toolbar"><input id="bq" type="search" placeholder="Cari nama fams" aria-label="Cari fams"></div>
+  <div class="cards" id="blList"></div>
+  <div class="empty" id="blEmpty" hidden>Tidak ada fams di daftar.</div>
+</section>
+
+<section class="page" id="p-aturan">
+  <div class="narrow">
+    <h1>Aturan</h1><div class="rule"></div>
+    <div class="box"><ol class="rules">
+      <li>Isi data dengan benar. Data palsu membuat pendaftaran ditolak.</li>
+      <li>Satu akun Discord hanya boleh satu pendaftaran seller.</li>
+      <li>Jual barang atau jasa yang legal dan jelas. Penipuan dilaporkan lewat tiket laporan scam di Discord.</li>
+      <li>Keputusan staf soal persetujuan seller bersifat final.</li>
+    </ol></div>
+  </div>
+</section>
+
+<footer>KAMPUNG KITA · Dibuat untuk warga</footer>
+</main>
+
+<script>
+/* ====== PENGATURAN ====== */
+const CONFIG = {
+  SERVER_NAME: "KAMPUNG KITA",
+  LINKS: [
+    {name:"WhatsApp",sub:"Komunitas WA",url:"https://chat.whatsapp.com/IRnfxcMUYIVEJM8zuMffNq"},
+    {name:"TikTok",sub:"Konten KAMPUNG KITA",url:"https://vm.tiktok.com/ZS9f7S9wdw6t5-yoWBM/"},
+    {name:"Discord",sub:"Gabung server",url:"https://discord.gg/RvGtnCWsF"}
+  ],
+  API_URL: "https://nbaxf9.bot-keep.xyz"   // alamat backend bot, tanpa garis miring di akhir. Contoh: https://domainkamu/api
+};
+/* ======================== */
+const $=id=>document.getElementById(id), $$=s=>[...document.querySelectorAll(s)];
+const DEMO=!CONFIG.API_URL;
+let user=null;
+const DEMO_SELLERS=[{nama:"Contoh Seller",toko:"Toko Contoh",produk:["Produk satu","Produk dua"]}];
+
+/* menu & routing */
+const ROUTES=["home","warga","seller","server","kif","cek","market","media","blacklist","aturan"];
+function closeMenu(){document.body.classList.remove("open");$("burger").setAttribute("aria-expanded","false")}
+$("burger").addEventListener("click",()=>{const o=document.body.classList.toggle("open");$("burger").setAttribute("aria-expanded",o)});
+$("scrim").addEventListener("click",closeMenu);
+function route(){
+  let r=(location.hash||"#home").slice(1); if(!ROUTES.includes(r)) r="home";
+  $$(".page").forEach(p=>p.classList.toggle("on",p.id==="p-"+r));
+  $$("#links a").forEach(a=>{a.getAttribute("href")==="#"+r?a.setAttribute("aria-current","page"):a.removeAttribute("aria-current")});
+  document.title=(r==="home"?"":r[0].toUpperCase()+r.slice(1)+" · ")+CONFIG.SERVER_NAME;
+  closeMenu(); window.scrollTo(0,0);
+  if(r==="home"||r==="warga") loadStats(); if(r==="media") loadMedia(); if(r==="blacklist") loadBl(); if(r==="kif") loadFams(); if(r==="cek") loadStatus(); if(r==="market") loadMarket();
+}
+window.addEventListener("hashchange",route);
+
+/* login Discord */
+const AV="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 56 56'%3E%3Crect width='56' height='56' fill='%235865F2'/%3E%3Ccircle cx='28' cy='22' r='10' fill='%23fff'/%3E%3Cpath d='M8 56c2-15 12-20 20-20s18 5 20 20z' fill='%23fff'/%3E%3C/svg%3E";
+function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+async function loadUser(){
+  if(DEMO){try{user=JSON.parse(sessionStorage.getItem("demoUser"))}catch(e){user=null}}
+  else{try{const r=await fetch(CONFIG.API_URL+"/me",{credentials:"include"});user=r.ok?await r.json():null}catch(e){user=null}}
+  renderGate();
+}
+function login(){
+  if(DEMO){
+    user={id:"000000000000000000",username:"demo_user",avatar_url:""};
+    try{sessionStorage.setItem("demoUser",JSON.stringify(user))}catch(e){}
+    renderGate(); if(location.hash==="#cek") loadStatus();
+  }else location.href=CONFIG.API_URL+"/auth/discord?return="+encodeURIComponent(location.href);
+}
+function renderGate(){
+  const who=user?`<div class="who"><img alt="" src="${esc(user.avatar_url)||AV}"><div><b>${esc(user.username)}</b><span>Masuk dengan Discord</span></div></div>`:"";
+  $$(".gate-slot").forEach(s=>{s.innerHTML=user?who:`<div class="gate"><p>Masuk dengan Discord dulu. ID dan foto profil Discord terisi otomatis.</p><button type="button" class="btn" data-login>Masuk dengan Discord</button></div>`});
+  $("suser").innerHTML=user?`<div class="who"><img alt="" src="${esc(user.avatar_url)||AV}"><div><b>${esc(user.username)}</b><span>Masuk dengan Discord</span></div></div>`:`<p>Belum masuk.</p><button type="button" class="btn ghost" style="width:100%" data-login>Masuk dengan Discord</button>`;
+  $$(".need-login").forEach(n=>n.hidden=!user);
+  $$("[data-login]").forEach(b=>b.addEventListener("click",login));
+}
+function say(f,type,text){const m=f.querySelector(".msg");m.className="msg "+type;m.textContent=text}
+
+/* foto seller */
+let foto=null;
+$("s-foto").addEventListener("change",e=>{
+  const f=e.target.files[0], fm=$("fSeller");
+  if(!f){foto=null;return}
+  if(f.size>5*1024*1024){e.target.value="";foto=null;say(fm,"err","Foto terlalu besar. Pilih file di bawah 5 MB.");return}
+  foto=f; fm.querySelector(".msg").className="msg"; $("s-prev").src=URL.createObjectURL(f);
+});
+
+/* kirim form */
+async function send(form,path,fd,okText,after){
+  const btn=form.querySelector(".submit"), label=btn.textContent;
+  btn.disabled=true; btn.textContent="Mengirim…"; form.querySelector(".msg").className="msg";
+  try{
+    if(DEMO){await new Promise(r=>setTimeout(r,700));console.log("Demo",path,Object.fromEntries(fd.entries()));say(form,"ok","Mode demo: formulir valid, tapi belum terkirim karena API_URL belum diisi.")}
+    else{
+      const r=await fetch(CONFIG.API_URL+path,{method:"POST",body:fd,credentials:"include"});
+      if(!r.ok) throw new Error((await r.text())||"Server menolak pendaftaran.");
+      say(form,"ok",okText); form.reset(); if(after) after();
+    }
+  }catch(err){say(form,"err","Gagal mengirim: "+(err.message||"periksa koneksi lalu coba lagi."))}
+  finally{btn.disabled=false;btn.textContent=label}
+}
+$("fSeller").addEventListener("submit",e=>{
+  e.preventDefault(); const f=e.target;
+  if(!f.reportValidity()) return;
+  if(!foto){say(f,"err","Unggah foto terlebih dahulu.");return}
+  send(f,"/register/seller",new FormData(f),"Pendaftaran terkirim. Tunggu persetujuan staf. Role seller diberikan otomatis setelah disetujui, dan statusnya bisa dicek di menu Cek Seller.",()=>{foto=null});
+});
+$("fServer").addEventListener("submit",e=>{
+  e.preventDefault(); const f=e.target;
+  if(!f.reportValidity()) return;
+  send(f,"/register/server",new FormData(f),"Pendaftaran berhasil. Role verifikasi sudah diberikan otomatis dan kartu identitasmu dikirim lewat DM Discord.");
+});
+
+/* KIF */
+async function loadFams(){
+  const sel=$("k-fams"); let list=[];
+  if(DEMO) list=[{id:"contoh",name:"Contoh Fams"}];
+  else{try{const r=await fetch(CONFIG.API_URL+"/kif/list");list=r.ok?await r.json():[]}catch(e){}}
+  sel.innerHTML=list.length?`<option value="">Pilih fams</option>`+list.map(f=>`<option value="${esc(f.id)}">${esc(f.name)}</option>`).join(""):`<option value="">Belum ada fams terdaftar</option>`;
+}
+$("fKif").addEventListener("submit",e=>{
+  e.preventDefault(); const f=e.target;
+  if(!f.reportValidity()) return;
+  send(f,"/register/kif",new FormData(f),"Pendaftaran berhasil. Role verifikasi fams sudah diberikan otomatis dan kartu KIF dikirim lewat DM Discord.");
+});
+
+/* statistik, media, blacklist */
+let stats=null,media=null,bl=null;
+function countUp(el,v){
+  if(typeof v!=="number"){el.textContent="—";return}
+  if(matchMedia("(prefers-reduced-motion:reduce)").matches){el.textContent=v.toLocaleString("id-ID");return}
+  const t0=performance.now();
+  (function f(t){const p=Math.min((t-t0)/1100,1);el.textContent=Math.round(v*(1-Math.pow(1-p,3))).toLocaleString("id-ID");if(p<1)requestAnimationFrame(f)})(t0);
+}
+async function loadStats(){
+  if(!stats){if(DEMO)stats={};else{try{const r=await fetch(CONFIG.API_URL+"/stats");stats=r.ok?await r.json():{}}catch(e){stats={}}}}
+  const fams=stats.fams||[];
+  $$("[data-n]").forEach(el=>{const k=el.dataset.n;countUp(el,k==="fams"?(stats.fams?fams.length:undefined):stats[k])});
+  $("famList").innerHTML=fams.map(f=>`<div class="fam"><b>${esc(f.name)}</b><span>${Number(f.count).toLocaleString("id-ID")} anggota</span></div>`).join("");
+  $("famEmpty").hidden=fams.length>0;
+}
+async function loadMedia(){
+  if(!media){if(DEMO)media=[];else{try{const r=await fetch(CONFIG.API_URL+"/media");media=r.ok?await r.json():[]}catch(e){media=[]}}}
+  const ok=u=>/^https?:\/\//i.test(u||"");
+  $("mediaList").innerHTML=media.map(m=>`<div class="card media">${ok(m.gambar)?`<img alt="" loading="lazy" src="${esc(m.gambar)}">`:""}<h2>${esc(m.judul)}</h2>${m.desk?`<p>${esc(m.desk)}</p>`:""}${ok(m.url)?`<a class="btn ghost" target="_blank" rel="noopener" href="${esc(m.url)}">Buka</a>`:""}</div>`).join("");
+  $("mediaEmpty").hidden=media.length>0;
+}
+async function loadBl(){
+  if(!bl){if(DEMO)bl=[];else{try{const r=await fetch(CONFIG.API_URL+"/blacklist");bl=r.ok?await r.json():[]}catch(e){bl=[]}}}
+  drawBl();
+}
+function drawBl(){
+  const q=$("bq").value.trim().toLowerCase(), l=(bl||[]).filter(x=>!q||x.nama.toLowerCase().includes(q));
+  $("blList").innerHTML=l.map(x=>`<div class="card bl"><h2>${esc(x.nama)}</h2><p>${esc(x.alasan)}</p><span class="hint">Sejak ${new Date(x.at).toLocaleDateString("id-ID",{day:"numeric",month:"long",year:"numeric"})}</span></div>`).join("");
+  $("blEmpty").hidden=l.length>0;
+}
+$("bq").addEventListener("input",drawBl);
+
+/* cek status */
+async function loadStatus(){
+  const out=$("cekOut"); if(!user) return;
+  out.className="empty"; out.textContent="Memuat status…";
+  let d=null;
+  if(DEMO) d={status:"menunggu",nama:"Contoh Seller"};
+  else{try{const r=await fetch(CONFIG.API_URL+"/seller/status",{credentials:"include"});if(r.status===404)d={status:"belum"};else if(r.ok)d=await r.json()}catch(e){}}
+  if(!d){out.textContent="Status belum bisa dimuat. Coba lagi nanti.";return}
+  if(d.status==="belum"){out.className="";out.innerHTML=`<p>Kamu belum mendaftar seller.</p><a class="btn" href="#seller">Daftar seller</a>`;return}
+  const map={menunggu:["s-wait","Menunggu persetujuan staf"],disetujui:["s-ok","Disetujui, role seller sudah diberikan otomatis"],ditolak:["s-no","Ditolak"]};
+  const m=map[d.status]||["s-wait",esc(d.status)];
+  out.className="";
+  out.innerHTML=`<p><span class="status ${m[0]}">${m[1]}</span></p>`+(d.status==="menunggu"?`<p class="hint">Begitu staf menyetujui, role seller masuk otomatis dan kamu dapat DM dari bot.</p>`:"")+(d.nama?`<p>Atas nama <b>${esc(d.nama)}</b></p>`:"")+(d.catatan?`<p>Catatan staf: ${esc(d.catatan)}</p>`:"")+(DEMO?`<p class="hint">Data contoh (mode demo).</p>`:"");
+}
+
+/* marketplace */
+let sellers=null;
+async function loadMarket(){
+  if(!sellers){
+    if(DEMO) sellers=DEMO_SELLERS;
+    else{try{const r=await fetch(CONFIG.API_URL+"/sellers");sellers=r.ok?await r.json():[]}catch(e){sellers=[]}}
+  }
+  drawMarket();
+}
+function drawMarket(){
+  const q=$("q").value.trim().toLowerCase();
+  const list=(sellers||[]).filter(s=>!q||(s.nama+" "+(s.toko||"")+" "+(s.produk||[]).join(" ")).toLowerCase().includes(q));
+  $("shopEmpty").hidden=list.length>0;
+  $("shopList").innerHTML=list.map(s=>`<div class="card shop"><div class="gem"></div><h2>${esc(s.toko||s.nama)}</h2>${s.toko?`<div class="meta">${esc(s.nama)}</div>`:""}<div class="chips">${(s.produk||[]).map(p=>`<span class="chip">${esc(p)}</span>`).join("")}</div></div>`).join("");
+}
+$("q").addEventListener("input",drawMarket);
+
+$("brand").textContent=CONFIG.SERVER_NAME; $("topName").textContent=CONFIG.SERVER_NAME;
+function renderLinks(){
+  $$(".links-slot").forEach(el=>{el.innerHTML=CONFIG.LINKS.map(l=>`<a class="lnk" href="${esc(l.url)}" target="_blank" rel="noopener"><b>${esc(l.name)}</b><span>${esc(l.sub)}</span></a>`).join("")});
+}
+renderLinks(); renderGate(); loadUser(); route();
+</script>
+</body>
+</html>
